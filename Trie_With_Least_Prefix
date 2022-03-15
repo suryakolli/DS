@@ -1,0 +1,43 @@
+class TrieNode:
+    def __init__(self):
+        self.count = 0
+        self.children = [None] * 26
+        self.isEnd = False
+        
+class Trie:
+    def __init__(self):
+        self.root = self.getNode()
+    
+    def getNode(self):
+        return TrieNode()
+    
+    def insert(self, s):
+        curr = self.root
+        for level in range(len(s)):
+            idx = ord(s[level]) - ord('a')
+            if curr.children[idx] is None:
+                curr.children[idx] = self.getNode()
+            
+            curr.children[idx].count += 1
+            curr = curr.children[idx]
+        curr.isEnd = True
+
+    def search(self, s):
+        curr = self.root
+        for level in range(len(s)):
+            idx = ord(s[level]) - ord('a')
+
+            if curr.children[idx] is None:
+                return False
+            curr = curr.children[idx]
+        return curr.isEnd
+    
+    def leastPrefix(self, s):
+        curr = self.root
+        for level in range(len(s)):
+            idx = ord(s[level]) - ord('a')
+            if curr.count == 1:
+                return level 
+            curr = curr.children[idx]
+
+        return len(s)
